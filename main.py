@@ -25,6 +25,20 @@ def count_pages(path):
             f.close()
     return page_count_dict
 
+def compile_harry_potter_books(path):
+    '''
+    Coalasces all text from all the Harry Potter series into a single string
+    '''
+    all_books_text = ""
+    for file in os.listdir(mypath):
+        if file.endswith(".pdf"):
+            with open(file, 'rb') as f:
+                raw_parser = parser.from_file(file)
+                current_book_text = raw_parser['content']
+                all_books_text += " ".join([all_books_text, current_book_text])
+            f.close()
+    return all_books_text
+
 def read_text():
     '''
     This function reads the harry potter books into python from a directory of pdfs.
@@ -110,11 +124,11 @@ def summarize_text(proper_nouns, top_num):
 
 if __name__== "__main__":
     mypath = os.getcwd()
+    all_harry_potter_text = compile_harry_potter_books(mypath)
     print(count_pages(mypath))
-    raw = parser.from_file('6halfbloodprince.pdf')
-    tokenized_half_blood_prince = text_tokenize(raw['content'])
+    tokenized_all_harry_potter = text_tokenize(all_harry_potter_text)
     nltk.download('averaged_perceptron_tagger')
-    tagged_half_blood_prince = tagging(tokenized_half_blood_prince)
-    proper_nouns_half_blood_prince = find_proper_nouns(tagged_half_blood_prince)
-    top_thirty_proper_nouns_half_blood_prince = summarize_text(proper_nouns_half_blood_prince, 30)
-    print(top_thirty_proper_nouns_half_blood_prince)
+    tagged_all_harry_potter = tagging(tokenized_all_harry_potter)
+    proper_nouns_all_harry_potter = find_proper_nouns(tagged_all_harry_potter)
+    top_forty_proper_nouns_all_harry_potter = summarize_text(proper_nouns_all_harry_potter, 40)
+    print(top_forty_proper_nouns_all_harry_potter)
