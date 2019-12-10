@@ -1,4 +1,7 @@
 import os, pdftotext
+import matplotlib.pyplot as plt
+
+plt.close('all')
 
 path = os.getcwd()
 series_houses = {}
@@ -39,15 +42,19 @@ for file in os.listdir(path):
 
         # Append the contents of houses in outer dictionary
         for key in list(d.keys()):
-            if (key == "gryffindor" or key == "slytherin" or key == "hufflepuff" or key == "ravenclaw"):
-                #print(key, ":", d[key])
+            houses = ["gryffindor", "hufflepuff", "ravenclaw", "slytherin"]
+            if (key in sorted(houses)):
                 book_houses[key] = d[key]
-                #outer_d[file] = (key, ":", d[key])
 
         series_houses[file[:-4]] = book_houses
 
-print(series_houses)
-# Print the contents of dictionary
-# for key in list(d.keys()):
-#     if (key == "gryffindor" or key == "slytherin" or key == "hufflepuff" or key == "ravenclaw"):
-#         print(key, ":", d[key])
+for k in series_houses.keys():
+    colours = ['green', 'yellow', 'blue', 'maroon']
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    for colour, (x, ys) in zip(colours, series_houses[k].items()):
+        ax.scatter([x], ys, c=colour, linewidth=0, s=50)
+
+    plt.show()
