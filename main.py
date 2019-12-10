@@ -1,4 +1,4 @@
-import nltk, os
+import nltk, os, pickle
 from io import StringIO
 from nltk import pos_tag, word_tokenize
 from os import listdir
@@ -126,9 +126,14 @@ if __name__== "__main__":
     mypath = os.getcwd()
     all_harry_potter_text = compile_harry_potter_books(mypath)
     print(count_pages(mypath))
+    # cleaned_hp_string = all_harry_potter_text.translate({ord(i): None for i in '—”’“'})
     tokenized_all_harry_potter = text_tokenize(all_harry_potter_text)
     nltk.download('averaged_perceptron_tagger')
     tagged_all_harry_potter = tagging(tokenized_all_harry_potter)
     proper_nouns_all_harry_potter = find_proper_nouns(tagged_all_harry_potter)
-    top_forty_proper_nouns_all_harry_potter = summarize_text(proper_nouns_all_harry_potter, 40)
-    print(top_forty_proper_nouns_all_harry_potter)
+    top_hundred_proper_nouns_all_harry_potter = summarize_text(proper_nouns_all_harry_potter, 100)
+    print(top_hundred_proper_nouns_all_harry_potter)
+
+    pickle_out = open("hp_characters.pickle","wb")
+    pickle.dump(top_hundred_proper_nouns_all_harry_potter, pickle_out)
+    pickle_out.close()
