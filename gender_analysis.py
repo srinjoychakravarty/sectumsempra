@@ -101,3 +101,39 @@ women_sentences = sentence_counter['female']
 print(str(women_sentences) + " sentences in Harry Potter are about wommen.")
 print("J.K Rowling uses " + str(men_sentences / women_sentences) + " times more sentences about men than about women...")
 print("...but that's okay because the main protagonist and antagonist are both male!")
+
+'''
+For each of the 50 'most' distinctively male words,
+we print the ratio of gendered sentences in which it is used,
+along with the count of male-subject and female-subject sentences that had the word.
+'''
+header = 'Rank\tRatio\tMale\tFemale\tWord'
+print('Male words')
+print(header)
+rank = 1
+for word in sorted(male_percent, key = male_percent.get,reverse = True)[:50]:
+    try:
+        ratio = male_percent[word] / (1 - male_percent[word])
+    except:
+        ratio = 100
+    print('%s\t%.1f\t%02d\t%02d\t%s' % (str(rank), ratio, word_freq['male'].get(word, 0), word_freq['female'].get(word, 0), word))
+    rank += 1
+'''
+For each of the 50 'most' distinctively female words,
+we print the ratio of gendered sentences in which it is used,
+along with the count of male-subject and female-subject sentences that had the word.
+'''
+print('\n'*2)
+print('Female words')
+print(header)
+rank = 1
+female_words = sorted(male_percent, key = male_percent.get, reverse = False)[:51]
+female_words.remove('mione')
+
+for word in female_words:
+    try:
+        ratio = (1 - male_percent[word]) / male_percent[word]
+    except:
+        ratio = 100
+    print('%s\t%.1f\t%01d\t%01d\t%s' % (str(rank), ratio,word_freq['male'].get(word, 0), word_freq['female'].get(word, 0), word))
+    rank += 1
